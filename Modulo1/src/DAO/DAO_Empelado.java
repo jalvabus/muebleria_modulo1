@@ -152,4 +152,39 @@ public class DAO_Empelado {
         }
         return empleado;
     }
+
+    public ArrayList<Empleado> getAllByName(String name) {
+        ArrayList<Empleado> empleados = new ArrayList<>();
+        try {
+            String SQL = "select * from persona p "
+                    + "inner join empleado e "
+                    + "on p.idPersona = e.idPersona "
+                    + "inner join usuarios u "
+                    + "on p.idPersona = u.id_persona "
+                    + "where concat(p.nombre, ' ', p.apaterno, ' ', p.amaterno) like '%" + name + "%';";
+            PreparedStatement ps = connection.prepareCall(SQL);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Empleado empleado = new Empleado();
+                empleado.setId_persona(rs.getInt(1));
+                empleado.setNombre(rs.getString(2));
+                empleado.setApaterno(rs.getString(3));
+                empleado.setAmaterno(rs.getString(4));
+                empleado.setEdad(rs.getInt(5));
+                empleado.setTelefono(rs.getString(6));
+                empleado.setEmail(rs.getString(7));
+                empleado.setDireccion(rs.getString(8));
+                empleado.setId_empleado(rs.getInt(9));
+                empleado.setCargo(rs.getString(11));
+                empleado.setFoto(rs.getString(12));
+                empleado.setId_usuario(rs.getInt(13));
+                empleado.setNombreUsuario(rs.getString(14));
+                empleado.setContrasenia(rs.getString(15));
+                empleados.add(empleado);
+            }
+        } catch (Exception e) {
+            System.out.println("Error DAO_Empleado > getAll: " + e);
+        }
+        return empleados;
+    }
 }

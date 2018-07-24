@@ -73,6 +73,8 @@ public class Empleados extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        txtBuscador = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
 
         Modificar.setText("Modificar");
         Modificar.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +108,7 @@ public class Empleados extends javax.swing.JInternalFrame {
         TableEmpleados.setComponentPopupMenu(MenuEmergente);
         jScrollPane1.setViewportView(TableEmpleados);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 735, 158));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 735, 158));
 
         jLabel2.setText("Nombre:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 70, 20));
@@ -128,8 +130,8 @@ public class Empleados extends javax.swing.JInternalFrame {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 70, 20));
         getContentPane().add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 244, -1));
 
-        jLabel7.setText("Email:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 70, 20));
+        jLabel7.setText("Busar Empleado: ");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 130, 20));
 
         jLabel8.setText("Direccion:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 70, 20));
@@ -191,6 +193,16 @@ public class Empleados extends javax.swing.JInternalFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, -1, -1));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, 240, 120));
 
+        txtBuscador.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscadorKeyTyped(evt);
+            }
+        });
+        getContentPane().add(txtBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 210, -1));
+
+        jLabel12.setText("Email:");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 70, 20));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -241,6 +253,11 @@ public class Empleados extends javax.swing.JInternalFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtBuscadorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscadorKeyTyped
+        // TODO add your handling code here:
+        getEmpeladosBuscador();
+    }//GEN-LAST:event_txtBuscadorKeyTyped
 
     Empleado getEmpleado = new Empleado();
     DAO_Empelado $empleados = new DAO_Empelado();
@@ -347,7 +364,7 @@ public class Empleados extends javax.swing.JInternalFrame {
         txtEmail.setText(empleado.getEmail());
         txtTelefono.setText(empleado.getTelefono());
         txtUsuario.setText(empleado.getNombreUsuario());
-        
+
     }
 
     private void disabledButtons(JButton bottonAviable) {
@@ -355,6 +372,23 @@ public class Empleados extends javax.swing.JInternalFrame {
         btnGuardar.setVisible(false);
         btnEliminar.setVisible(false);
         bottonAviable.setVisible(true);
+    }
+
+    private void getEmpeladosBuscador() {
+        limpiarTabla();
+        DefaultTableModel tableEmpleado = (DefaultTableModel) TableEmpleados.getModel();
+        String nombre = txtBuscador.getText();
+        ArrayList<Empleado> empleados = $empleados.getAllByName(nombre);
+
+        empleados.forEach((empleado) -> {
+            System.out.println(empleado.getNombre());
+            int fila = tableEmpleado.getRowCount();
+            tableEmpleado.addRow(new Object[1]);
+            tableEmpleado.setValueAt(empleado.getId_persona(), fila, 0);
+            tableEmpleado.setValueAt(empleado.getNombre(), fila, 1);
+            tableEmpleado.setValueAt(empleado.getApaterno(), fila, 2);
+            tableEmpleado.setValueAt(empleado.getCargo(), fila, 3);
+        });
     }
 
     private void getEmpelados() {
@@ -393,6 +427,7 @@ public class Empleados extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -405,6 +440,7 @@ public class Empleados extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> jcbCargo;
     private javax.swing.JTextField txtAmaterno;
     private javax.swing.JTextField txtApaterno;
+    private javax.swing.JTextField txtBuscador;
     private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtEdad;
