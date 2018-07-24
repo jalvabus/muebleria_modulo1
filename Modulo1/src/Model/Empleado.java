@@ -24,7 +24,16 @@ public class Empleado {
     private int id_usuario;
     private String nombreUsuario;
     private String contrasenia;
+    private String foto;
 
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+    
     public Empleado() {
     }
 

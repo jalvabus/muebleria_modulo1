@@ -49,9 +49,10 @@ public class DAO_Empelado {
                 empleado.setDireccion(rs.getString(8));
                 empleado.setId_empleado(rs.getInt(9));
                 empleado.setCargo(rs.getString(11));
-                empleado.setId_usuario(rs.getInt(12));
-                empleado.setNombreUsuario(rs.getString(13));
-                empleado.setContrasenia(rs.getString(14));
+                empleado.setFoto(rs.getString(12));
+                empleado.setId_usuario(rs.getInt(13));
+                empleado.setNombreUsuario(rs.getString(14));
+                empleado.setContrasenia(rs.getString(15));
                 empleados.add(empleado);
             }
         } catch (Exception e) {
@@ -72,7 +73,8 @@ public class DAO_Empelado {
                     + empleado.getDireccion() + "','"
                     + empleado.getCargo() + "','"
                     + empleado.getNombreUsuario() + "','"
-                    + empleado.getContrasenia() + "')";
+                    + empleado.getContrasenia() + "', '"
+                    + empleado.getFoto() + "')";
             PreparedStatement ps = connection.prepareCall(SQL);
             ps.executeUpdate();
             return true;
@@ -95,7 +97,8 @@ public class DAO_Empelado {
                     + empleado.getDireccion() + "','"
                     + empleado.getCargo() + "','"
                     + empleado.getNombreUsuario() + "','"
-                    + empleado.getContrasenia() + "')";
+                    + empleado.getContrasenia() + "', '"
+                    + empleado.getFoto() + "')";
             PreparedStatement ps = connection.prepareCall(SQL);
             ps.executeUpdate();
             return true;
@@ -139,9 +142,10 @@ public class DAO_Empelado {
                 empleado.setDireccion(rs.getString(8));
                 empleado.setId_empleado(rs.getInt(9));
                 empleado.setCargo(rs.getString(11));
-                empleado.setId_usuario(rs.getInt(12));
-                empleado.setNombreUsuario(rs.getString(13));
-                empleado.setContrasenia(rs.getString(14));
+                empleado.setFoto(rs.getString(12));
+                empleado.setId_usuario(rs.getInt(13));
+                empleado.setNombreUsuario(rs.getString(14));
+                empleado.setContrasenia(rs.getString(15));
             }
         } catch (Exception e) {
             System.out.println("Error DAO_Empleado > getOneByIDPersona: " + e);

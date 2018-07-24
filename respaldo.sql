@@ -170,9 +170,10 @@ CREATE TABLE `empleado` (
   `idEmpleado` int(11) NOT NULL AUTO_INCREMENT,
   `idPersona` int(11) DEFAULT NULL,
   `cargo` text,
+  `foto` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idEmpleado`),
   KEY `idPersona` (`idPersona`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +182,7 @@ CREATE TABLE `empleado` (
 
 LOCK TABLES `empleado` WRITE;
 /*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
-INSERT INTO `empleado` VALUES (1,1,'Vendedor'),(2,2,'Vendedir');
+INSERT INTO `empleado` VALUES (5,5,'Gerente','BrilloMio.png');
 /*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -310,7 +311,7 @@ CREATE TABLE `persona` (
   `email` text,
   `direccion` text,
   PRIMARY KEY (`idPersona`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,7 +320,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (1,'Juan','Alva','Bustamante',20,'5516365615','juanalva432@gmail.com','Zumpango'),(2,'Vero','Cvz','Torres',24,'5516365627','vero.cure24@gmail.com','Santo Domingo');
+INSERT INTO `persona` VALUES (5,'Juan','ALva','Bustamante',20,'671256387','juanalva432@gmail.com','Zumpango');
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +390,7 @@ CREATE TABLE `usuarios` (
   `contrasenia` text,
   `id_persona` int(11) DEFAULT NULL,
   PRIMARY KEY (`idUsuario`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +399,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'juan123','123',1),(2,'vero123','1234',2);
+INSERT INTO `usuarios` VALUES (5,'juanalva','juan123',5);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -480,13 +481,14 @@ email VARCHAR(50),
 direccion VARCHAR(50),
 cargo VARCHAR(50),
 usuario VARCHAR(50),
-contraseña VARCHAR(50))
+contraseña VARCHAR(50),
+foto VARCHAR(50))
 BEGIN 
 DECLARE 
 idPersona int;
 INSERT INTO PERSONA VALUES (null, nombre, apaterno, amaterno, edad, telefono, email, direccion);
 set idPersona = (Select last_insert_id());
-INSERT INTO empleado values (null, idPersona, cargo);
+INSERT INTO empleado values (null, idPersona, cargo, foto);
 INSERT INTO usuarios VALUES (null, usuario, contraseña, idPersona);
 END ;;
 DELIMITER ;
@@ -515,12 +517,13 @@ emailIN VARCHAR(50),
 direccionIN VARCHAR(50),
 cargoIN VARCHAR(50),
 usuarioIN VARCHAR(50),
-contraseñaIN VARCHAR(50))
+contraseñaIN VARCHAR(50),
+fotoIN VARCHAR(50))
 BEGIN 
 Update persona set nombre = nombreIN, apaterno = aparternoIN, amaterno = amaternoIN,
 edad = edadIN, telefono = telefonoIN, email = emailIN, direccion = direccionIN 
 where idPersona = id_personaIN;
-Update empleado set cargo = cargoIN where idPersona = id_personaIN;
+Update empleado set cargo = cargoIN, foto = fotoIN where idPersona = id_personaIN;
 Update usuarios set nombreUsuario = usuarioIN, contrasenia = contraseñaIN where id_persona = id_personaIN;
 END ;;
 DELIMITER ;
@@ -538,4 +541,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-24  3:20:52
+-- Dump completed on 2018-07-24  3:48:40

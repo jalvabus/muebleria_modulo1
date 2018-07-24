@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import Model.*;
 import DAO.*;
+import java.io.File;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -68,6 +71,8 @@ public class Empleados extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         Modificar.setText("Modificar");
         Modificar.addActionListener(new java.awt.event.ActionListener() {
@@ -101,49 +106,49 @@ public class Empleados extends javax.swing.JInternalFrame {
         TableEmpleados.setComponentPopupMenu(MenuEmergente);
         jScrollPane1.setViewportView(TableEmpleados);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 735, 158));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 735, 158));
 
         jLabel2.setText("Nombre:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 70, 20));
         getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 244, -1));
 
         jLabel3.setText("Apellido P:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 70, 20));
-        getContentPane().add(txtApaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 244, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 70, 20));
+        getContentPane().add(txtApaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 244, -1));
 
         jLabel4.setText("Apellido M:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 70, 20));
-        getContentPane().add(txtAmaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 244, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 70, 20));
+        getContentPane().add(txtAmaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 244, -1));
 
         jLabel5.setText("Edad:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 70, 20));
-        getContentPane().add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 244, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 70, 20));
+        getContentPane().add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 244, -1));
 
         jLabel6.setText("Telefono:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 70, 20));
-        getContentPane().add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, 244, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 70, 20));
+        getContentPane().add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 244, -1));
 
         jLabel7.setText("Email:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 70, 20));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 70, 20));
 
         jLabel8.setText("Direccion:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 70, 20));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 70, 20));
 
         jLabel9.setText("Cargo:");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 100, 70, 20));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 70, 20));
 
         jLabel10.setText("Usuario:");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 140, 70, 20));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 80, 70, 20));
 
         jLabel11.setText("Contraseña:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 180, 70, 20));
-        getContentPane().add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 180, 244, -1));
-        getContentPane().add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 140, 244, -1));
-        getContentPane().add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, 244, -1));
-        getContentPane().add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 20, 244, -1));
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 70, 20));
+        getContentPane().add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, 244, -1));
+        getContentPane().add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, 244, -1));
+        getContentPane().add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 20, 244, -1));
+        getContentPane().add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, 244, -1));
 
         jcbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gerente", "Vendedor", "Cajero" }));
-        getContentPane().add(jcbCargo, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, 240, -1));
+        getContentPane().add(jcbCargo, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 50, 240, -1));
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -151,7 +156,7 @@ public class Empleados extends javax.swing.JInternalFrame {
                 btnAgregarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 130, -1));
+        getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 130, -1));
 
         btnGuardar.setText("Guardar Cambios");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -159,7 +164,7 @@ public class Empleados extends javax.swing.JInternalFrame {
                 btnGuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, 150, -1));
+        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, 150, -1));
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -167,7 +172,7 @@ public class Empleados extends javax.swing.JInternalFrame {
                 btnCancelarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 220, 170, -1));
+        getContentPane().add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, 150, -1));
 
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -175,7 +180,16 @@ public class Empleados extends javax.swing.JInternalFrame {
                 btnEliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 150, -1));
+        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 130, -1));
+
+        jButton1.setText("Imagen");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, 240, 120));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -210,6 +224,24 @@ public class Empleados extends javax.swing.JInternalFrame {
         resetVariables();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    String ruta;
+    String nameImage;
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.showOpenDialog(null);
+            File f = chooser.getSelectedFile();
+            nameImage = f.getName();
+            System.out.println(nameImage);
+            ruta = f.getAbsolutePath();
+            // txtRuta.setText(ruta);
+            ImageIcon imagen = new ImageIcon(ruta);
+            jLabel1.setIcon(imagen);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     Empleado getEmpleado = new Empleado();
     DAO_Empelado $empleados = new DAO_Empelado();
 
@@ -235,6 +267,7 @@ public class Empleados extends javax.swing.JInternalFrame {
         empleado.setNombre(txtNombre.getText());
         empleado.setNombreUsuario(txtUsuario.getText());
         empleado.setTelefono(txtTelefono.getText());
+        empleado.setFoto(nameImage);
         if ($empleados.updateEmpleado(empleado)) {
             resetVariables();
             JOptionPane.showMessageDialog(null, "Actualizacion Exitosa");
@@ -255,6 +288,7 @@ public class Empleados extends javax.swing.JInternalFrame {
         empleado.setNombre(txtNombre.getText());
         empleado.setNombreUsuario(txtUsuario.getText());
         empleado.setTelefono(txtTelefono.getText());
+        empleado.setFoto(nameImage);
         if ($empleados.createEmpleado(empleado)) {
             resetVariables();
             JOptionPane.showMessageDialog(null, "Registro Exitoso");
@@ -275,6 +309,7 @@ public class Empleados extends javax.swing.JInternalFrame {
         txtTelefono.setText(null);
         txtUsuario.setText(null);
         getEmpelados();
+        jLabel1.setIcon(null);
         disabledButtons(btnAgregar);
     }
 
@@ -312,6 +347,7 @@ public class Empleados extends javax.swing.JInternalFrame {
         txtEmail.setText(empleado.getEmail());
         txtTelefono.setText(empleado.getTelefono());
         txtUsuario.setText(empleado.getNombreUsuario());
+        
     }
 
     private void disabledButtons(JButton bottonAviable) {
@@ -353,6 +389,8 @@ public class Empleados extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
