@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.7.14, for Win64 (x86_64)
+﻿-- MySQL dump 10.13  Distrib 5.7.14, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ingenieria
 -- ------------------------------------------------------
@@ -86,7 +86,7 @@ CREATE TABLE `comision` (
   `idComision` int(11) NOT NULL AUTO_INCREMENT,
   `idVenta` int(11) DEFAULT NULL,
   `montoComision` float DEFAULT NULL,
-  `fechaComision` datetime DEFAULT NULL,
+  `fechaComision` date DEFAULT NULL,
   PRIMARY KEY (`idComision`),
   KEY `idVenta` (`idVenta`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -277,7 +277,7 @@ CREATE TABLE `pagoventa` (
   `idPagoVenta` int(11) NOT NULL AUTO_INCREMENT,
   `idVenta` int(11) DEFAULT NULL,
   `idFlete` int(11) DEFAULT NULL,
-  `fechaPago` datetime DEFAULT NULL,
+  `fechaPago` date DEFAULT NULL,
   `totalPago` float DEFAULT NULL,
   PRIMARY KEY (`idPagoVenta`),
   KEY `idVenta` (`idVenta`),
@@ -419,7 +419,7 @@ CREATE TABLE `venta` (
   `cantidad` int(11) DEFAULT NULL,
   `totalVenta` float DEFAULT NULL,
   `totalIVA` float DEFAULT NULL,
-  `fecha` datetime DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
   PRIMARY KEY (`idVenta`),
   KEY `idPagoVenta` (`idPagoVenta`),
   KEY `idFlete` (`idFlete`),

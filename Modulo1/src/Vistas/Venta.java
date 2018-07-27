@@ -5,6 +5,23 @@
  */
 package Vistas;
 
+import Connection.DB_Manager;
+import Model.Ventas;
+import DAO.DAO_Venta;
+import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+
 /**
  *
  * @author juana
@@ -16,7 +33,20 @@ public class Venta extends javax.swing.JInternalFrame {
      */
     public Venta() {
         initComponents();
+
+        txtCliente.setEnabled(false);
+        btnBuscarCliente.setEnabled(false);
+        btnBuscarArticulos.setEnabled(false);
+        txtCantidadRecibida.setEnabled(false);
+        btnCalcularCambio.setEnabled(false);
+        btnVaciarCarrito.setEnabled(false);
+        btnRealizarVenta.setEnabled(false);
+        cbFlete.setEnabled(false);
+        cbFormaPago.setEnabled(false);
     }
+
+    private DB_Manager mysql = new DB_Manager();
+    private Connection cn = mysql.getConnection();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,21 +57,914 @@ public class Venta extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtNoVendedor = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtCliente = new javax.swing.JTextField();
+        btnBuscarCliente = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaVentas = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jlIva = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jlCambio = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jlTotalIva = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jlTotal = new javax.swing.JLabel();
+        btnBuscarArticulos = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtCantidadRecibida = new javax.swing.JTextField();
+        jlCantidadTotal = new javax.swing.JLabel();
+        btnVaciarCarrito = new javax.swing.JButton();
+        btnRealizarVenta = new javax.swing.JButton();
+        btnCalcularCambio = new javax.swing.JButton();
+        btnValidarVendedor = new javax.swing.JButton();
+        jlNombreVendedor = new javax.swing.JLabel();
+        cbFormaPago = new javax.swing.JComboBox<>();
+        cbFlete = new javax.swing.JComboBox<>();
+
+        setClosable(true);
+        setResizable(true);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("REGISTRO DE VENTAS");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 260, 30));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("No. Vendedor:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 60, -1, 20));
+
+        txtNoVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNoVendedorActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtNoVendedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 60, 80, -1));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Cliente:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+
+        txtCliente.setEditable(false);
+        txtCliente.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        jPanel1.add(txtCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 310, -1));
+
+        btnBuscarCliente.setText("Buscar");
+        btnBuscarCliente.setAlignmentX(0.5F);
+        btnBuscarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarClienteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnBuscarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, -1, 20));
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        tablaVentas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "IDENTIFICADOR", "DESCRIPCION", "CANTIDAD", "COSTO", "TOTAL", "ELIMINAR"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaVentas.setFocusable(false);
+        tablaVentas.setGridColor(new java.awt.Color(102, 102, 102));
+        tablaVentas.setIntercellSpacing(new java.awt.Dimension(0, 10));
+        tablaVentas.setOpaque(false);
+        tablaVentas.setRowHeight(35);
+        tablaVentas.setShowHorizontalLines(false);
+        tablaVentas.setShowVerticalLines(false);
+        tablaVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaVentasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaVentas);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 550, 280));
+
+        jPanel3.setBackground(new java.awt.Color(255, 0, 0));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Total (M.N):");
+
+        jlIva.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlIva.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Cambio (M.N):");
+
+        jlCambio.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlCambio.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("IVA:");
+
+        jlTotalIva.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlTotalIva.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Total/IVA:");
+
+        jlTotal.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlTotal.setForeground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addGap(94, 94, 94)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jlIva, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jlTotalIva, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jlCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(101, 101, 101)
+                    .addComponent(jlTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(393, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlTotalIva, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlIva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jlCambio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel8)
+                                .addComponent(jLabel4)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jlTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 554, -1));
+
+        btnBuscarArticulos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnBuscarArticulos.setText("BUSCAR ARTICULOS");
+        btnBuscarArticulos.setBorderPainted(false);
+        btnBuscarArticulos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscarArticulos.setFocusPainted(false);
+        btnBuscarArticulos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarArticulosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnBuscarArticulos, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, 298, 31));
+
+        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 150, 298, 10));
+
+        jLabel11.setText("Total artículos:");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 200, -1, -1));
+
+        jLabel5.setText("Cantidad recibida:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 220, -1, -1));
+        jPanel1.add(txtCantidadRecibida, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 220, 114, -1));
+        jPanel1.add(jlCantidadTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 200, 110, 20));
+
+        btnVaciarCarrito.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnVaciarCarrito.setText("Vaciar Carrito");
+        btnVaciarCarrito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVaciarCarritoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnVaciarCarrito, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 363, -1, 50));
+
+        btnRealizarVenta.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnRealizarVenta.setText("Finalizar Venta");
+        btnRealizarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRealizarVentaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnRealizarVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 360, -1, 50));
+
+        btnCalcularCambio.setText("Calcular Cambio");
+        btnCalcularCambio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcularCambioActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCalcularCambio, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 250, -1, -1));
+
+        btnValidarVendedor.setText("Ok");
+        btnValidarVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnValidarVendedorActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnValidarVendedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 60, 50, -1));
+
+        jlNombreVendedor.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel1.add(jlNombreVendedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(664, 90, 200, 20));
+
+        cbFormaPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona una forma de Pago:", "Efectivo", "Tarjeta" }));
+        cbFormaPago.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbFormaPagoItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(cbFormaPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 170, 210, -1));
+
+        cbFlete.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Deseas servicio de Flete?", "SI", "NO" }));
+        cbFlete.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbFleteItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(cbFlete, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 310, 290, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 749, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 449, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-//aqui va el codiguito de la venta
+
+    private void txtNoVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoVendedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNoVendedorActionPerformed
+
+    private void btnRealizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarVentaActionPerformed
+        validacionesRegistrar();
+    }//GEN-LAST:event_btnRealizarVentaActionPerformed
+
+    private void btnValidarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValidarVendedorActionPerformed
+        validateExistsEmployee();
+    }//GEN-LAST:event_btnValidarVendedorActionPerformed
+
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
+        System.out.println("Abriendo");
+        BuscarCliente clientes = new BuscarCliente();
+        Index.Container.add(clientes);
+        clientes.toFront();
+        clientes.setVisible(true);
+    }//GEN-LAST:event_btnBuscarClienteActionPerformed
+
+    private void btnBuscarArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarArticulosActionPerformed
+        BuscarMuebles muebles = new BuscarMuebles();
+        Index.Container.add(muebles);
+        muebles.toFront();
+        muebles.setVisible(true);
+    }//GEN-LAST:event_btnBuscarArticulosActionPerformed
+
+    private void btnCalcularCambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularCambioActionPerformed
+        calcularCambio();
+    }//GEN-LAST:event_btnCalcularCambioActionPerformed
+
+    private void btnVaciarCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarCarritoActionPerformed
+        limpiarTabla();
+        jlTotal.setText("");
+        jlIva.setText("");
+        jlTotalIva.setText("");
+        jlCambio.setText("");
+        jlCantidadTotal.setText("");
+    }//GEN-LAST:event_btnVaciarCarritoActionPerformed
+
+    private void tablaVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVentasMouseClicked
+        DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+        int column = tablaVentas.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / tablaVentas.getRowHeight();
+
+        if (row < tablaVentas.getRowCount() && row >= 0 && column < tablaVentas.getColumnCount() && column >= 0) {
+            Object value = tablaVentas.getValueAt(row, column);
+            if (value instanceof JButton) {
+                ((JButton) value).doClick();
+                JButton boton = (JButton) value;
+                if (boton.getName().equals("ELIMINAR")) {
+                    int fila = tablaVentas.getSelectedRow();
+                    if (fila >= 0) {
+                        modelo.removeRow(fila);
+                        BuscarMuebles.calcular();
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_tablaVentasMouseClicked
+
+    private void cbFormaPagoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbFormaPagoItemStateChanged
+        String formaPago = (String) cbFormaPago.getSelectedItem();
+        if (formaPago.equalsIgnoreCase("Tarjeta")) {
+            btnCalcularCambio.setEnabled(false);
+            jLabel5.setText("No Tarjeta:");
+            btnRealizarVenta.setEnabled(true);
+        } else {
+            jLabel5.setText("Cantidad recibida:");
+            btnCalcularCambio.setEnabled(true);
+        }
+    }//GEN-LAST:event_cbFormaPagoItemStateChanged
+
+    private void cbFleteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbFleteItemStateChanged
+
+    }//GEN-LAST:event_cbFleteItemStateChanged
+
+    Ventas ventas = new Ventas();
+    DAO_Venta $ventas = new DAO_Venta();
+
+    private void validateExistsEmployee() {
+        int idPersona = Integer.parseInt(txtNoVendedor.getText());
+        if ($ventas.validateExistsEmployee(idPersona)) {
+            btnBuscarCliente.setEnabled(true);
+            txtNoVendedor.setEnabled(false);
+            btnValidarVendedor.setEnabled(false);
+            jlNombreVendedor.setText($ventas.getNameEmployeeByIDPersona(idPersona));
+        } else {
+            JOptionPane.showMessageDialog(null, "El No.Empleado no existe, Intentar con otro.");
+            txtNoVendedor.setText("");
+        }
+    }
+
+    public void calcularCambio() {
+        if (tablaVentas.getRowCount() < 1) {
+            JOptionPane.showMessageDialog(null, "Imposible realizar la operación,\nPorfavor agregue artículos!!", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else if (txtCantidadRecibida.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Ingrese la cantidad recibida!!!", "INFORMAION", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            double recibe = Double.parseDouble(txtCantidadRecibida.getText());
+            double tota = Double.parseDouble(jlTotalIva.getText());
+
+            if (recibe < tota) {
+                JOptionPane.showMessageDialog(null, "Ingrese un importe valido.", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                jlCambio.setText(String.valueOf(recibe - tota));
+                btnRealizarVenta.setEnabled(true);
+            }
+        }
+    }
+
+    public void limpiarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+        for (int i = 0; i < tablaVentas.getRowCount(); i++) {
+            modelo.removeRow(i);
+            i -= 1;
+        }
+    }
+
+    private boolean validateFlete() {
+        String flete = (String) cbFlete.getSelectedItem();
+        if (flete.equalsIgnoreCase("SI")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void validacionesRegistrar() {
+        String cliente = txtCliente.getText();
+        String formaPago = (String) cbFormaPago.getSelectedItem();
+        if (cliente.isEmpty() | tablaVentas.getRowCount() < 1) {
+            JOptionPane.showMessageDialog(null, "Imposible realizar Venta!!");
+        } else {
+            ArrayList<Ventas> lista = new ArrayList<Ventas>($ventas.getAllClientByName(txtCliente.getText()));
+            int idCliente = 0;
+            String direccion = "";
+            String telefono = "";
+            for (int i = 0; i < lista.size(); i++) {
+                idCliente = lista.get(i).getIdCliente();
+                direccion = lista.get(i).getDireccion();
+                telefono = lista.get(i).getTelefono();
+            }
+            int frecuencia = 0;
+            frecuencia = $ventas.getFrecuencia(idCliente);
+            float descuentoObtenido = descuentoClienteFrecuente(frecuencia);
+            float descuento = (Float.parseFloat(jlTotal.getText()) * descuentoObtenido) / 100;
+            float totalDescuento = Float.parseFloat(jlTotal.getText()) - descuento;
+            if (descuentoObtenido < 5) {
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Tiene Descuento del " + descuentoObtenido + "% por ser cliente frecuente",
+                        "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            }
+            if (validateFlete()) {
+                System.out.println("Seccion Flete:");
+                String fleteT = "SI";
+                if (formaPago.equalsIgnoreCase("Tarjeta")) {
+                    System.out.println("Seccion Tarjeta:");
+                    int idtarjeta = Integer.parseInt(txtCantidadRecibida.getText());
+                    float saldo = $ventas.getSaldo(idtarjeta);
+                    float totalIva = 0;
+                    if (descuentoObtenido < 5) {
+                        totalIva = Float.parseFloat(jlTotal.getText());
+                    } else {
+                        totalIva = totalDescuento;
+                    }
+                    if (saldo >= totalIva) {
+                        registrarFlete();
+                        float saldoNuevo = saldo - totalIva;
+                        Ventas tarjeta = new Ventas();
+                        tarjeta.setSaldo(saldoNuevo);
+                        tarjeta.setIdTarjeta(idtarjeta);
+                        if ($ventas.updateSaldo(tarjeta)) {
+                            int idFlete = $ventas.getLastIdFlete();
+                            Ventas venta = new Ventas();
+                            venta.setIdCliente(idCliente);
+                            venta.setIdEmpleado(Integer.parseInt(txtNoVendedor.getText()));
+                            venta.setIdFlete(idFlete);
+                            venta.setIdPagoVenta(0);
+                            venta.setCantidadTotal(Integer.parseInt(jlCantidadTotal.getText()));
+                            venta.setTotalVenta(totalIva);
+                            venta.setTotalIVA(Float.parseFloat(jlIva.getText()));
+                            venta.setFecha(fechaActual());
+
+                            if ($ventas.registrarVenta(venta)) {
+                                detalleVenta();
+                                Ventas freq = new Ventas();
+                                frecuencia++;
+                                freq.setFecuente(frecuencia);
+                                freq.setIdCliente(idCliente);
+
+                                if ($ventas.updateFrecuenciaCliente(freq)) {
+                                    int idVentae = $ventas.getLastIdVenta();
+                                    Ventas pago = new Ventas();
+                                    pago.setIdVenta(idVentae);
+                                    pago.setIdFlete(idFlete);
+                                    pago.setFechaPago(fechaActual());
+                                    pago.setTotalPago(Float.parseFloat(txtCantidadRecibida.getText()));
+
+                                    int idPagoVenta = $ventas.getLastIdPagoVenta();
+                                    Ventas pagoventa = new Ventas();
+                                    pagoventa.setIdPagoVenta(idPagoVenta);
+                                    pagoventa.setIdVenta(idVentae);
+                                    if ($ventas.registrarPagoVenta(pago) && $ventas.updateIdPagoVenta(pagoventa)) {
+                                        float commi = (3 * totalIva) / 100;
+                                        Ventas comision = new Ventas();
+                                        comision.setIdVenta(idVentae);
+                                        comision.setMontoComision(commi);
+                                        comision.setFechaComision(fechaActual());
+                                        if ($ventas.registrarComision(comision)) {
+                                            generarNota(idVentae, cliente, jlNombreVendedor.getText(), direccion, telefono, fleteT);
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar la comision",
+                                                    "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                        }
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar el pagoVenta",
+                                                "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Ocurrio un error al actualizar la frecuencia del cliente",
+                                            "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                }
+
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar la venta",
+                                        "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ocurrio un error al actualizar el saldo de la tarjeta",
+                                    "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No cuenta con el saldo suficiente."
+                                + "\nPor favor pague en efectivo.", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                        jLabel5.setText("Cantidad recibida:");
+                        txtCantidadRecibida.setText("");
+                        btnCalcularCambio.setEnabled(true);
+                        cbFormaPago.setSelectedIndex(1);
+                        cbFormaPago.setEnabled(false);
+                        btnRealizarVenta.setEnabled(false);
+                    }
+                } else {
+                    System.out.println("Seccion Efectivo:");
+                    if (registrarFlete()) {
+                        float totalIva = 0;
+                        if (descuentoObtenido < 5) {
+                            totalIva = Float.parseFloat(jlTotal.getText());
+                        } else {
+                            totalIva = totalDescuento;
+                        }
+                        int idFlete = $ventas.getLastIdFlete();
+                        Ventas venta = new Ventas();
+                        venta.setIdCliente(idCliente);
+                        venta.setIdEmpleado(Integer.parseInt(txtNoVendedor.getText()));
+                        venta.setIdFlete(idFlete);
+                        venta.setIdPagoVenta(0);
+                        venta.setCantidadTotal(Integer.parseInt(jlCantidadTotal.getText()));
+                        venta.setTotalVenta(totalIva);
+                        venta.setTotalIVA(Float.parseFloat(jlIva.getText()));
+                        venta.setFecha(fechaActual());
+
+                        if ($ventas.registrarVenta(venta)) {
+                            detalleVenta();
+                            Ventas freq = new Ventas();
+                            frecuencia++;
+                            freq.setFecuente(frecuencia);
+                            freq.setIdCliente(idCliente);
+
+                            if ($ventas.updateFrecuenciaCliente(freq)) {
+                                int idVentae = $ventas.getLastIdVenta();
+                                Ventas pago = new Ventas();
+                                pago.setIdVenta(idVentae);
+                                pago.setIdFlete(idFlete);
+                                pago.setFechaPago(fechaActual());
+                                pago.setTotalPago(Float.parseFloat(txtCantidadRecibida.getText()));
+                                if ($ventas.registrarPagoVenta(pago)) {
+                                    float commi = (3 * totalIva) / 100;
+                                    Ventas comision = new Ventas();
+                                    comision.setIdVenta(idVentae);
+                                    comision.setMontoComision(commi);
+                                    comision.setFechaComision(fechaActual());
+                                    if ($ventas.registrarComision(comision)) {
+                                        generarNota(idVentae, cliente, jlNombreVendedor.getText(), direccion, telefono, fleteT);
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar la comision",
+                                                "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar el pagoVenta",
+                                            "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Ocurrio un error al actualizar la frecuencia del cliente",
+                                        "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar la venta",
+                                    "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar el Flete",
+                                "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            } else {
+                System.out.println("Seccion No Flete:");
+                String fleteP = "NO";
+                if (formaPago.equalsIgnoreCase("Tarjeta")) {
+                    System.out.println("Seccion Tarjeta:");
+                    int idtarjeta = Integer.parseInt(txtCantidadRecibida.getText());
+                    float saldo = $ventas.getSaldo(idtarjeta);
+                    float totalIva = 0;
+                    if (descuentoObtenido < 5) {
+                        totalIva = Float.parseFloat(jlTotal.getText());
+                    } else {
+                        totalIva = totalDescuento;
+                    }
+                    if (saldo >= totalIva) {
+                        float saldoNuevo = saldo - totalIva;
+                        Ventas tarjeta = new Ventas();
+                        tarjeta.setSaldo(saldoNuevo);
+                        tarjeta.setIdTarjeta(idtarjeta);
+                        if ($ventas.updateSaldo(tarjeta)) {
+                            Ventas venta = new Ventas();
+                            venta.setIdCliente(idCliente);
+                            venta.setIdEmpleado(Integer.parseInt(txtNoVendedor.getText()));
+                            venta.setIdFlete(0);
+                            venta.setIdPagoVenta(0);
+                            venta.setCantidadTotal(Integer.parseInt(jlCantidadTotal.getText()));
+                            venta.setTotalVenta(totalIva);
+                            venta.setTotalIVA(Float.parseFloat(jlIva.getText()));
+                            venta.setFecha(fechaActual());
+
+                            if ($ventas.registrarVenta(venta)) {
+                                detalleVenta();
+                                Ventas freq = new Ventas();
+                                frecuencia++;
+                                freq.setFecuente(frecuencia);
+                                freq.setIdCliente(idCliente);
+
+                                if ($ventas.updateFrecuenciaCliente(freq)) {
+                                    int idVentae = $ventas.getLastIdVenta();
+                                    Ventas pago = new Ventas();
+                                    pago.setIdVenta(idVentae);
+                                    pago.setIdFlete(0);
+                                    pago.setFechaPago(fechaActual());
+                                    pago.setTotalPago(Float.parseFloat(txtCantidadRecibida.getText()));
+                                    if ($ventas.registrarPagoVenta(pago)) {
+                                        float commi = (3 * totalIva) / 100;
+                                        Ventas comision = new Ventas();
+                                        comision.setIdVenta(idVentae);
+                                        comision.setMontoComision(commi);
+                                        comision.setFechaComision(fechaActual());
+                                        if ($ventas.registrarComision(comision)) {
+                                            generarNota(idVentae, cliente, jlNombreVendedor.getText(), direccion, telefono, fleteP);
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar la comision",
+                                                    "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                        }
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar el pagoVenta",
+                                                "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Ocurrio un error al actualizar la frecuencia del cliente",
+                                            "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                }
+
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar la venta",
+                                        "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ocurrio un error al actualizar el saldo de la tarjeta",
+                                    "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No cuenta con el saldo suficiente."
+                                + "\nPor favor pague en efectivo.", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                        jLabel5.setText("Cantidad recibida:");
+                        txtCantidadRecibida.setText("");
+                        btnCalcularCambio.setEnabled(true);
+                        cbFormaPago.setSelectedIndex(1);
+                        cbFormaPago.setEnabled(false);
+                        btnRealizarVenta.setEnabled(false);
+                    }
+                } else {
+                    System.out.println("Seccion Efectivo:");
+                    float totalIva = 0;
+                    if (descuentoObtenido < 5) {
+                        totalIva = Float.parseFloat(jlTotal.getText());
+                    } else {
+                        totalIva = totalDescuento;
+                    }
+                    Ventas venta = new Ventas();
+                    venta.setIdCliente(idCliente);
+                    venta.setIdEmpleado(Integer.parseInt(txtNoVendedor.getText()));
+                    venta.setIdFlete(0);
+                    venta.setIdPagoVenta(0);
+                    venta.setCantidadTotal(Integer.parseInt(jlCantidadTotal.getText()));
+                    venta.setTotalVenta(totalIva);
+                    venta.setTotalIVA(Float.parseFloat(jlIva.getText()));
+                    venta.setFecha(fechaActual());
+
+                    if ($ventas.registrarVenta(venta)) {
+                        detalleVenta();
+                        Ventas freq = new Ventas();
+                        frecuencia++;
+                        freq.setFecuente(frecuencia);
+                        freq.setIdCliente(idCliente);
+
+                        if ($ventas.updateFrecuenciaCliente(freq)) {
+                            int idVentae = $ventas.getLastIdVenta();
+                            Ventas pago = new Ventas();
+                            pago.setIdVenta(idVentae);
+                            pago.setIdFlete(0);
+                            pago.setFechaPago(fechaActual());
+                            pago.setTotalPago(Float.parseFloat(txtCantidadRecibida.getText()));
+                            if ($ventas.registrarPagoVenta(pago)) {
+                                float commi = (3 * totalIva) / 100;
+                                Ventas comision = new Ventas();
+                                comision.setIdVenta(idVentae);
+                                comision.setMontoComision(commi);
+                                comision.setFechaComision(fechaActual());
+                                if ($ventas.registrarComision(comision)) {
+                                    generarNota(idVentae, cliente, jlNombreVendedor.getText(), direccion, telefono, fleteP);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar la comision",
+                                            "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar el pagoVenta",
+                                        "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ocurrio un error al actualizar la frecuencia del cliente",
+                                    "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ocurrio un error al registrar la venta",
+                                "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean registrarFlete() {
+        String option = JOptionPane.showInputDialog(null, "Ingresa una direccion si quieres que sea enviado a un "
+                + "\ndomicilio diferente al que tienes registrado, de caso contrario si deseas "
+                + "\nque sea enviado a tu direccion registrada deja vacio el campo", "SERVICIO FLLETE", JOptionPane.INFORMATION_MESSAGE);
+        Ventas flete = new Ventas();
+        float costo = 500;
+        if (option.equalsIgnoreCase("")) {
+            $ventas.getAllClientByName(txtCliente.getText());
+            ArrayList<Ventas> lista = new ArrayList<Ventas>($ventas.getAllClientByName(txtCliente.getText()));
+            String direccion = "";
+            for (int i = 0; i < lista.size(); i++) {
+                direccion = lista.get(i).getDireccion();
+            }
+            flete.setDireccion(direccion);
+            flete.setCosto(costo);
+            if ($ventas.registrarFlete(flete)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            flete.setDireccion(option);
+            flete.setCosto(costo);
+            if ($ventas.registrarFlete(flete)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public static String fechaActual() {
+        Date fecha = new Date();
+        SimpleDateFormat formatofecha = new SimpleDateFormat("YYYY/MM/dd");
+
+        return formatofecha.format(fecha);
+    }
+
+    private void detalleVenta() {
+        for (int i = 0; i < tablaVentas.getRowCount(); i++) {
+            String idProducto = (String) tablaVentas.getValueAt(i, 0);
+            String cantidad = (String) tablaVentas.getValueAt(i, 3);
+            Double total = (Double) tablaVentas.getValueAt(i, 5);
+
+            try {
+                int idVenta = $ventas.getLastIdVenta();
+                String tot = total.toString();
+                Ventas detalle = new Ventas();
+                detalle.setIdVenta(idVenta);
+                detalle.setIdProducto(Integer.parseInt(idProducto));
+                detalle.setCantidad(Integer.parseInt(cantidad));
+                detalle.setSubTotal(Float.parseFloat(tot));
+
+                if ($ventas.registrarDetalleVenta(detalle)) {
+                    int comprado = Integer.parseInt(cantidad);
+                    int existencia = $ventas.getCantidadStock(Integer.parseInt(idProducto));
+                    int stock1 = existencia - comprado;
+                    Ventas stock = new Ventas();
+                    stock.setCantidad(stock1);
+                    stock.setIdProducto(Integer.parseInt(idProducto));
+
+                    if ($ventas.updateStock(stock)) {
+
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error en el ingreso de datos." + e, "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+        }
+    }
+
+    private float descuentoClienteFrecuente(int frecuencia) {
+        float descuento = 0;
+        if (frecuencia >= 5 & frecuencia < 10) {
+            descuento = 3;
+        } else if (frecuencia >= 10 & frecuencia < 15) {
+            descuento = 6;
+        } else if (frecuencia >= 15 & frecuencia < 30) {
+            descuento = 12;
+        } else if (frecuencia > 30) {
+            descuento = 18;
+        } else {
+            descuento = 0;
+        }
+        return descuento;
+    }
+
+    private void nuevo() {
+        btnCalcularCambio.setEnabled(false);
+        txtCliente.setEnabled(false);
+        btnBuscarCliente.setEnabled(false);
+        btnBuscarArticulos.setEnabled(false);
+        txtCantidadRecibida.setEnabled(false);
+        btnCalcularCambio.setEnabled(false);
+        btnVaciarCarrito.setEnabled(false);
+        btnRealizarVenta.setEnabled(false);
+        cbFlete.setEnabled(false);
+        cbFormaPago.setEnabled(false);
+        txtNoVendedor.setEnabled(true);
+        btnValidarVendedor.setEnabled(true);
+
+        txtNoVendedor.setText("");
+        jlNombreVendedor.setText("");
+        txtCliente.setText("");
+        jlCantidadTotal.setText("");
+        txtCantidadRecibida.setText("");
+        cbFlete.setSelectedIndex(0);
+        cbFormaPago.setSelectedIndex(0);
+        jlTotal.setText("");
+        jlIva.setText("");
+        jlTotalIva.setText("");
+        jlCambio.setText("");
+
+        limpiarTabla();
+    }
+
+    private void generarNota(int id_venta, String cliente, String vendedor, String direccion, String telefono, String flete) {
+        try {
+            JasperReport jr = (JasperReport) JRLoader.loadObject(Reportes.class.getResource("/Vistas/notaVenta.jasper"));
+
+            HashMap<String, Object> parametro = new HashMap<>();
+            parametro.put("idVenta", id_venta);
+            parametro.put("cliente", cliente);
+            parametro.put("vendedor", vendedor);
+            parametro.put("rdireccion", direccion);
+            parametro.put("telefono", telefono);
+            parametro.put("flete", flete);
+
+            JasperPrint jp = JasperFillManager.fillReport(jr, parametro, cn);
+            JasperViewer jv = new JasperViewer(jp, false);
+            jv.setTitle("Nota de Venta");
+            jv.show();
+            
+            nuevo();
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(rootPane, "error" + e);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JButton btnBuscarArticulos;
+    private javax.swing.JButton btnBuscarCliente;
+    public static javax.swing.JButton btnCalcularCambio;
+    public static javax.swing.JButton btnRealizarVenta;
+    public static javax.swing.JButton btnVaciarCarrito;
+    private javax.swing.JButton btnValidarVendedor;
+    public static javax.swing.JComboBox<String> cbFlete;
+    public static javax.swing.JComboBox<String> cbFormaPago;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    public static javax.swing.JLabel jlCambio;
+    public static javax.swing.JLabel jlCantidadTotal;
+    public static javax.swing.JLabel jlIva;
+    private javax.swing.JLabel jlNombreVendedor;
+    public static javax.swing.JLabel jlTotal;
+    public static javax.swing.JLabel jlTotalIva;
+    public static javax.swing.JTable tablaVentas;
+    public static javax.swing.JTextField txtCantidadRecibida;
+    public static javax.swing.JTextField txtCliente;
+    private javax.swing.JTextField txtNoVendedor;
     // End of variables declaration//GEN-END:variables
+
 }

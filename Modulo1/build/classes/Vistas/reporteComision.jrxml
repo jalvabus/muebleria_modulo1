@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0dbe5945-b7de-4a3d-9cf5-f7bac1ad57b7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="mes" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mess" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM comision WHERE MONTH(fechaComision) = $P{mes};]]>
+	</queryString>
+	<field name="idComision" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idVenta" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="montoComision" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaComision" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="16" width="555" height="28" uuid="9f26b201-fc3f-49b0-a3d5-d2787583d221"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE LAS COMISIONES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="106" y="0" width="148" height="20" uuid="c0128c66-0b77-46ab-882e-9eb203fc7e38"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[REPORTE DEL MES DE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="254" y="0" width="100" height="20" uuid="7e392d79-adb6-40c8-841d-07bcf3373e51"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{mess}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="84" y="12" width="83" height="20" uuid="ffc1080b-72c5-4bdc-995a-9114ffdb2022"/>
+				<textElement verticalAlignment="Top">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="167" y="12" width="87" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e2eba672-4691-417b-815b-4b2d3ecaaf4e"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[IDVENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="254" y="12" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="86aa0694-e469-4adc-80b8-9f8ada0657e3"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[COMISION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="354" y="12" width="112" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0f183114-b2c1-4640-a3ad-72311882b9b9"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="84" y="0" width="83" height="20" uuid="e6bf6db1-2d71-47dd-9ad5-1b1b2ae62183"/>
+				<textFieldExpression><![CDATA[$F{idComision}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="0" width="87" height="20" uuid="e0fc7c44-baae-4390-9e40-8d0c8dd2faf5"/>
+				<textFieldExpression><![CDATA[$F{idVenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="254" y="0" width="100" height="20" uuid="4ec72c28-264c-42cd-8794-fe98308bf6cc"/>
+				<textFieldExpression><![CDATA[$F{montoComision}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="354" y="0" width="112" height="20" uuid="3de55236-f444-4310-8f9f-236e2e5708d6"/>
+				<textFieldExpression><![CDATA[$F{fechaComision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement x="84" y="11" width="382" height="4" uuid="3e1df6de-3582-4a7c-b5ee-de55b6717475"/>
+			</line>
+			<staticText>
+				<reportElement x="167" y="25" width="100" height="20" uuid="86b23578-ed6c-4dc4-9ed0-7ed22a29ef0d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emitidio el dia:]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="267" y="25" width="100" height="20" uuid="30935b25-73f0-42c2-98b8-4664268a2d92"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
